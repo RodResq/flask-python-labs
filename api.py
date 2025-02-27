@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, session
 
 
 class Jogo:
@@ -35,6 +35,20 @@ def criar():
     jogos.append(jogo)
     
     return redirect('/')
+
+
+@app.route('/login')
+def login():
+    return render_template('login.html')
+
+
+@app.route('/autenticar', methods=['POST', ])
+def autenticar():
+    if 'teste' == request.form['senha']:
+        session['usuario_logado'] = request.form['usuario']
+        return redirect('/')
+    else:
+        return redirect('/login')
 
 
 if __name__ == '__main__':
