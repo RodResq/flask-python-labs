@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request, redirect, session, flash, url_for
+from flask_sqlalchemy import SQLAlchemy
 
 
 class Jogo:
@@ -13,9 +14,34 @@ jogo3 = Jogo('Mortal Kombat', 'Luta', 'SNS')
 
 jogos = [jogo1, jogo2, jogo3]
 
+
+class Usuario:
+    def __init__(self, nome, nickname, senha):
+        self.nome = nome
+        self.nickname = nickname
+        self.senha = senha
+        
+usuario1 = Usuario("Bruno Divino", "BD", "alohomora")
+usuario2 = Usuario("Camila Ferreira", "Mila", "paozinho")
+usuario3 = Usuario("Guilherme Louro", "Cake", "python_eh_vida")
+
+usuarios = { usuario1.nickname: usuario1, 
+             usuario2.nickname: usuario2,
+             usuario3.nickname: usuario3 }
+        
+
 app = Flask(__name__)
 app.secret_key = 'app_jogoteca'
 
+db = SQLAlchemy(app)
+app.config['SQLALCHEMY_DATABASE_URI'] = \
+    '{SGBD}://{usuario}:{senha}@{servidor}/{database}'.format(
+        SGBD = 'mysql+mysqlconnector',
+        usuario = 'root',
+        senha = '123',
+        servidor = 'localhost',
+        database = 'jogoteca'
+    )
 
 @app.route('/')
 def index():
@@ -48,12 +74,13 @@ def login():
 
 @app.route('/autenticar', methods=['POST', ])
 def autenticar():
-    if 'teste' == request.form['senha']:
-        session['usuario_logado'] = request.form['usuario']
-        proxima_pagina = request.form['proxima']
-        flash(f"{session['usuario_logado']} logado com sucesso.")
-        
-        return redirect(proxima_pagina)
+    if request.form['usuario'] in usuarios:
+        usuario = usuarios[request.form['usuario']]
+        if request.form['senha'] == usuario.senha:
+            session['usuario_logado'] = usuario.nickname
+            flash(usuario.nickname + 'logado com sucesso')
+            proxima_pagina = request.form['proxima']    
+            return redirect(proxima_pagina)    
     else:
         flash('Usuário näo logado.')
         return redirect(url_for('login'))
