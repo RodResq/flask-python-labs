@@ -33,7 +33,7 @@ usuarios = { usuario1.nickname: usuario1,
 app = Flask(__name__)
 app.secret_key = 'app_jogoteca'
 
-db = SQLAlchemy(app)
+db = SQLAlchemy()
 app.config['SQLALCHEMY_DATABASE_URI'] = \
     '{SGBD}://{usuario}:{senha}@{servidor}/{database}'.format(
         SGBD = 'mysql+mysqlconnector',
@@ -42,6 +42,27 @@ app.config['SQLALCHEMY_DATABASE_URI'] = \
         servidor = 'localhost',
         database = 'jogoteca'
     )
+    
+db.init_app(app)
+
+
+class Jogos(db.Model):
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    nome = db.Column(db.String(50), nullable=False)
+    console = db.Column(db.String(20), nullable=False)
+    
+    def __repr__(self):
+        return '<Nome %r>' % self.nome
+    
+    
+class Usuarios(db.Model):
+    nome = db.Column(db.String(20), nullable=False)
+    nickname = db.Column(db.String(8), primary_key=True)
+    console = db.Column(db.String(100), nullable=False)
+    
+    def __repr__(self):
+        return '<Nome %r>' % self.nome
+    
 
 @app.route('/')
 def index():
