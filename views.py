@@ -32,6 +32,10 @@ def criar():
     db.session.add(novo_jogo)
     db.session.commit()
     
+    arquivo = request.files['arquivo']
+    path_uploads = app.config['PATH_UPLOADS'] + '/uploads'
+    arquivo.save(f'{path_uploads}/capa{novo_jogo.id}.jpg')
+    
     return redirect(url_for('index'))
 
 
@@ -80,7 +84,6 @@ def autenticar():
         if request.form['senha'] == usuario.senha:
             session['usuario_logado'] = usuario.nickname
             flash(usuario.nickname + 'logado com sucesso')
-            proxima_pagina = request.form['proxima']    
             return redirect(url_for('index'))    
     else:
         flash('Usuário näo logado.')

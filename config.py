@@ -1,3 +1,5 @@
+import os
+
 SECRET_KEY = 'app_jogoteca'
 
 SQLALCHEMY_DATABASE_URI = \
@@ -9,3 +11,4 @@ SQLALCHEMY_DATABASE_URI = \
         database = 'jogoteca'
     )
  
+PATH_UPLOADS = os.path.dirname(os.path.abspath(__file__))  
