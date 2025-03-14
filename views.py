@@ -35,7 +35,7 @@ def criar():
     db.session.commit()
     
     arquivo = request.files['arquivo']
-    path_uploads = app.config['PATH_UPLOADS'] + '/uploads'
+    path_uploads = app.config['PATH_UPLOADS']
     timestamp = time.time()
     
     arquivo.save(f'{path_uploads}/capa{novo_jogo.id}-{timestamp}.jpg')
@@ -64,10 +64,10 @@ def atualizar():
     db.session.commit()
     
     arquivo = request.files['arquivo']
-    path_uploads = app.config['PATH_UPLOADS'] + '/uploads'
+    path_uploads = app.config['PATH_UPLOADS']
     timestamp = time.time()
     
-    deleta_arquivo(id)
+    deleta_arquivo(jogo.id)
     
     arquivo.save(f'{path_uploads}/capa{jogo.id}-{timestamp}.jpg')
     
