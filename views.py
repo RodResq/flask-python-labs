@@ -46,7 +46,7 @@ def criar():
 @app.route("/editar/<int:id>")
 def editar(id):
     if 'usuario_logado' not in session or session['usuario_logado'] == None:
-        return redirect(url_for('login', proxima=url_for('editar')))
+        return redirect(url_for('login', proxima=url_for('editar', id=id)))
     jogo = Jogos.query.filter_by(id=id).first()
     capa_jogo = recupera_imagem(id)
     
