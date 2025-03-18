@@ -1,5 +1,7 @@
 from flask import Flask 
 from flask_sqlalchemy import SQLAlchemy
+from urllib.parse import urlencode
+
 
         
 app = Flask(__name__)

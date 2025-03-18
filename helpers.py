@@ -1,5 +1,14 @@
 import os
+
+from flask_wtf import FlaskForm
 from api import app
+from wtforms import StringField, validators
+
+
+class FormularioJogo(FlaskForm):
+    nome = StringField('Nome do Jogo', )
+    categoria = StringField()
+    console = StringField()
 
 def recupera_imagem(id):
     for nome_arquivo in os.listdir(app.config['PATH_UPLOADS']):
