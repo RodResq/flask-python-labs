@@ -6,7 +6,7 @@ SQLALCHEMY_DATABASE_URI = \
     '{SGBD}://{usuario}:{senha}@{servidor}/{database}'.format(
         SGBD = 'mysql+mysqlconnector',
         usuario = 'root',
-        senha = '123',
+        senha = 'New_Strong_Pass123!',
         servidor = 'localhost',
         database = 'jogoteca'
     )
