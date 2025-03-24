@@ -1,7 +1,7 @@
 from flask import render_template, request, redirect, session, flash, url_for, send_from_directory
-from models import Jogos, Usuarios
+from models import Jogos
 from api import app, db
-from helpers import recupera_imagem, deleta_arquivo, FormularioJogo, FormularioUsuario
+from helpers import recupera_imagem, deleta_arquivo, FormularioJogo
 import time
 
 
@@ -94,33 +94,6 @@ def deletar(id):
     flash('Jogo deletado com sucesso!')
     
     return redirect(url_for('index'))   
-
-@app.route('/login')
-def login():
-    proxima = request.args.get('proxima')
-    form = FormularioUsuario()
-    return render_template('login.html', proxima=proxima, form=form)
-
-
-@app.route('/autenticar', methods=['POST', ])
-def autenticar():
-    form = FormularioUsuario(request.form)
-    usuario = Usuarios.query.filter_by(nickname=form.nickname.data).first()
-    if usuario:
-        if form.senha.data == usuario.senha:
-            session['usuario_logado'] = usuario.nickname
-            flash(usuario.nickname + 'logado com sucesso')
-            return redirect(url_for('index'))    
-    else:
-        flash('Usuário näo logado.')
-        return redirect(url_for('login'))
-    
-    
-@app.route('/logout')
-def logout():
-    session['usuario_logado'] = None
-    flash('Logout efetuado com sucesso!')
-    return redirect(url_for('index'))
 
 
 @app.route('/uploads/<nome_arquivo>')
